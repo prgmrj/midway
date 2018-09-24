@@ -1,2 +1,56 @@
-* { margin:0; padding:0; box-sizing:border-box; -webkit-box-sizing:border-box; }
-html, body, #map { display:block; width:100%; height:100%; }
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-box-sizing:border-box; font-size:14px; line-height:1; font-family:NanumGothic; color:#000; }
+html, body, #map { position:relative; display:block; width:100%; height:100%; }
+body { min-width:320px; }
+ul { list-style:none; }
+a { text-decoration:none; }
+
+#map { overflow:hidden; }
+#search_wrap { position:absolute; top:10px; left:10px; z-index:1; max-width:300px; width:100%; padding:10px; background:rgba(0,0,0,.5); border-radius:10px; }
+#logo { font-size:15px; margin-bottom:10px; text-align:center; color:#fff; cursor:default; }
+#logo strong { font-size:20px; font-weight:bold; color:#fff; }
+
+#search_form { display:block; width:100%; position:relative; padding-right:30px; }
+#search_input { width:100%; padding:5px; border:0; outline:0; height:30px; }
+#search_submit { background:#fff; border:0; outline:0; cursor:pointer; width:30px; height:30px; display:block; position:absolute; top:0; right:0; }
+#search_submit img { width:30px; }
+
+#points_list { display:block; margin-top:10px; }
+#points_list > li { padding:5px 15px 5px 8px; cursor:pointer; position:relative; display:inline-block; background:#fff; border-radius:10px; font-size:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#points_list > li > span { font-size:12px; display:block; }
+#points_list > li > span {  }
+
+#search_list { display:block; background:#fff; max-height:200px; overflow:auto; }
+#search_wrap._searching #search_list, #search_wrap._searching #pagination { margin-top:10px; }
+#search_list > li { padding:10px 10px 10px 54px; border-top:1px solid #ddd; cursor:pointer; position:relative; display:block; }
+#search_list > li:first-child { border-top:0; }
+#search_list > li .info h5 { line-height:20px; margin-bottom:5px; }
+#search_list > li .info span { display:block; font-size:13px; line-height:18px; }
+#search_list > li .info span.jibun { color:#777; }
+#search_list > li .info span.tel { color:#ec7e25; }
+#search_list .item .markerbg { position:absolute; width:36px; height:37px; display:block; top:50%; transform:translateY(-50%); left:10px; background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat; }
+#search_list .item .marker_1 {background-position: 0 -10px;}
+#search_list .item .marker_2 {background-position: 0 -56px;}
+#search_list .item .marker_3 {background-position: 0 -102px}
+#search_list .item .marker_4 {background-position: 0 -148px;}
+#search_list .item .marker_5 {background-position: 0 -194px;}
+#search_list .item .marker_6 {background-position: 0 -240px;}
+#search_list .item .marker_7 {background-position: 0 -286px;}
+#search_list .item .marker_8 {background-position: 0 -332px;}
+#search_list .item .marker_9 {background-position: 0 -378px;}
+#search_list .item .marker_10 {background-position: 0 -423px;}
+#search_list .item .marker_11 {background-position: 0 -470px;}
+#search_list .item .marker_12 {background-position: 0 -516px;}
+#search_list .item .marker_13 {background-position: 0 -562px;}
+#search_list .item .marker_14 {background-position: 0 -608px;}
+#search_list .item .marker_15 {background-position: 0 -654px;}
+
+#pagination { display:block; text-align:center; }
+#pagination > a { color:#fff; margin:5px; }
+#pagination > a.on { font-weight:bold; }
+
+#zoom_controls { position:absolute; z-index:1; display:block; bottom:10px; right:10px; font-size:0; padding:5px; background:rgba(0,0,0,.5); border-radius:10px; }
+#zoom_controls > span { display:inline-block; width:30px; vertical-align:middle; cursor:pointer; }
+#zoom_controls > span:first-child { margin-right:5px; }
+#zoom_controls > span img { width:30px; }

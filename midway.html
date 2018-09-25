@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title>Midway SPA</title>
+<title>중간지점 찾기 - Midway SPA</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
@@ -11,22 +11,26 @@
 <script src="js/common.js"></script>
 </head>
 <body>
+	<div id="dim">
+		<div id="typeinfo">
+			<p>지점명</p>
+			<span id="info_cancel">x</span>
+			<form id="pointinfo" onsubmit="addPoint(); return false;">
+				<input id="info_input" type="text" placeholder="지점 명칭 입력" autocomplete="off">
+				<button id="btn_info" type="submit">확인</button>
+			</form>
+		</div>
+	</div>
 	<div id="map"></div>
 	<div id="search_wrap">
-		<p id="logo"><strong>Midway</strong> by J-Labs</p>
+		<p id="logo"><strong>Midway</strong> by <a href="http://j-labs.io" target="_blank">J-LABS</a></p>
+		<span id="help">?</span>
 		<form id="search_form" onsubmit="searchPlaces(); return false;">
 			<input id="search_input" type="text" value="" placeholder="주소, 키워드 검색" autocomplete="off">
 			<button id="search_submit" type="submit"><img src="img/icon_search.png" alt="검색 버튼"></button>
 		</form>
-		<ul id="points_list">
-			<li><span class="title">포인트 1</span></li>
-			<li><span class="title">2</span></li>
-			<li><span class="title">3</span></li>
-			<li><span class="title">4</span></li>
-			<li><span class="title">5</span></li>
-			<li><span class="title">6</span></li>
-			
-		</ul>
+		<ul id="points_list"></ul>
+		<button id="btn_calc">중간 지점 찾기</button>
 		<ul id="search_list"></ul>
         <div id="pagination"></div>
 	</div>

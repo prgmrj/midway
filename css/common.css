@@ -1,6 +1,6 @@
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
-* { margin:0; padding:0; box-sizing:border-box; -webkit-box-sizing:border-box; font-size:14px; line-height:1; font-family:NanumGothic; color:#000; }
+*, *:after, *:before { margin:0; padding:0; box-sizing:border-box; -webkit-box-sizing:border-box; font-size:14px; line-height:1; font-family:NanumGothic; color:#000; }
 html, body, #map { position:relative; display:block; width:100%; height:100%; }
 body { min-width:320px; }
 ul { list-style:none; }
@@ -9,19 +9,23 @@ a { text-decoration:none; }
 #map { overflow:hidden; }
 #search_wrap { position:absolute; top:10px; left:10px; z-index:1; max-width:300px; width:100%; padding:10px; background:rgba(0,0,0,.5); border-radius:10px; }
 #logo { font-size:15px; margin-bottom:10px; text-align:center; color:#fff; cursor:default; }
-#logo strong { font-size:20px; font-weight:bold; color:#fff; }
+#logo > strong { font-size:20px; font-weight:bold; color:#fff; }
+#logo > a { font-size:15px; color:#fff; }
+#help { position:absolute; top:13px; right:10px; font-size:12px; width:16px; height:16px; line-height:16px; text-align:center; background:rgba(255,255,255,.7); display:inline-block; border-radius:10px; cursor:pointer; }
+#help:hover { background:rgba(255,255,255,.9); }
 
-#search_form { display:block; width:100%; position:relative; padding-right:30px; }
-#search_input { width:100%; padding:5px; border:0; outline:0; height:30px; }
-#search_submit { background:#fff; border:0; outline:0; cursor:pointer; width:30px; height:30px; display:block; position:absolute; top:0; right:0; }
+#search_form { display:block; width:100%; position:relative; padding-right:30px; background:#fff; border-radius:10px; }
+#search_input { width:100%; padding:5px 8px; border:0; outline:0; height:30px; background:transparent; }
+#search_submit { border:0; outline:0; cursor:pointer; width:30px; height:30px; display:block; position:absolute; top:0; right:0; background:transparent; }
 #search_submit img { width:30px; }
 
-#points_list { display:block; margin-top:10px; }
-#points_list > li { padding:5px 15px 5px 8px; cursor:pointer; position:relative; display:inline-block; background:#fff; border-radius:10px; font-size:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-#points_list > li > span { font-size:12px; display:block; }
-#points_list > li > span {  }
+#points_list { display:block; margin-top:5px; }
+#points_list > li { padding:5px 20px 5px 8px; cursor:pointer; position:relative; display:inline-block; margin-top:5px; margin-right:5px; background:rgba(255,255,255,.7); border-radius:10px; font-size:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#points_list > li:hover { background:rgba(255,255,255,.9); }
+#points_list > li > span.title { font-size:12px; display:block; max-width:65px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#points_list > li > span.del { font-size:13px; display:inline-block; position:absolute; top:0; right:0; padding:2px 8px 7px 4px; font-weight:bold; }
 
-#search_list { display:block; background:#fff; max-height:200px; overflow:auto; }
+#search_list { display:block; background:rgba(255,255,255,.5); max-height:200px; overflow:auto; }
 #search_wrap._searching #search_list, #search_wrap._searching #pagination { margin-top:10px; }
 #search_list > li { padding:10px 10px 10px 54px; border-top:1px solid #ddd; cursor:pointer; position:relative; display:block; }
 #search_list > li:first-child { border-top:0; }
@@ -54,3 +58,16 @@ a { text-decoration:none; }
 #zoom_controls > span { display:inline-block; width:30px; vertical-align:middle; cursor:pointer; }
 #zoom_controls > span:first-child { margin-right:5px; }
 #zoom_controls > span img { width:30px; }
+
+#btn_calc { display:block; margin-top:10px; background:rgba(0,0,0,.8); opacity:0.7; color:#fff; padding:15px; text-align:center; cursor:pointer; border-radius:10px; border:0; width:100%; }
+#btn_calc:hover { opacity:1; }
+
+#dim { position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; background:rgba(0,0,0,.5); display:none; }
+body.infoedit #dim { display:block; }
+#typeinfo { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); border-radius:10px; width:200px; }
+#typeinfo > p { text-align:center; padding:10px; background:rgba(0,0,0,.7); border-radius:10px 10px 0 0; color:#fff; }
+#info_cancel { font-size:16px; display:inline-block; position:absolute; top:0; right:0; padding:7px 10px 11px 10px; font-weight:bold; cursor:pointer; color:#fff; }
+#pointinfo { padding:10px; background:#fff; border-radius:0 0 10px 10px; }
+#info_input { width:100%; padding:5px 8px; border:1px solid #ccc; outline:0; height:30px; background:transparent; border-radius:10px; }
+#btn_info { display:block; margin-top:10px; background:rgba(0,0,0,.9); opacity:0.9; color:#fff; padding:15px; text-align:center; cursor:pointer; border-radius:10px; border:0; width:100%; }
+#btn_info:hover { opacity:1; }

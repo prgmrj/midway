@@ -1,21 +1,32 @@
-var map, ps, infowindow;
-var markers = []; // 검색 마커 define
-var points = [];
+var map, ps, infowindow, tempmarker;
+var markers = []; // 검색 마커
+var points = []; // 포인트 마커
 var pointCnt = 0;
 
-$(window).on('load', init); // 초기화 call
+$(window).on('load', init);
 
 function init(){ // 초기화
-	var container = document.getElementById('map'); // 지도 객체
+	var container = document.getElementById('map');
 	
 	map = new daum.maps.Map(container, { // 지도 생성
 		center: new daum.maps.LatLng(37.541, 126.986), // 서울 중심 좌표
 		level: 7
+	});	
+	ps = new daum.maps.services.Places(); // 장소 검색 생성	
+	infowindow = new daum.maps.InfoWindow({ zIndex: 1 }); // 정보창 생성
+    
+	tempmarker = new daum.maps.Marker(); 
+	
+	daum.maps.event.addListener(map, 'click', function(mouseEvent) {  
+	    
+	    // 클릭한 위도, 경도 정보를 가져옵니다 
+	    var latlng = mouseEvent.latLng; 
+	    
+	    // 마커 위치를 클릭한 위치로 옮깁니다
+	    tempmarker.setPosition(latlng);
+	    
+	    setPointList(latlng);
 	});
-	
-	ps = new daum.maps.services.Places(); // 장소 검색 생성
-	
-	infowindow = new daum.maps.InfoWindow({zIndex:1}); // 정보창 생성
 }
 
 function zoomIn(){ // 확대
@@ -26,15 +37,14 @@ function zoomOut(){ // 축소
     map.setLevel(map.getLevel() + 1);
 }
 
-function searchPlaces() { // 정소 검색 submit
-	var keyword = document.getElementById('search_input').value; // input 값
+function searchPlaces(){ // 정소 검색 submit
+	var keyword = document.getElementById('search_input').value; // input
 
 	if (!keyword.replace(/^\s+|\s+$/g, '')){
 		alert('주소 또는 키워드를 입력해주세요.');
         return false;
 	}
-	
-	ps.keywordSearch(keyword, placesSearchCB); // 검색 call
+	ps.keywordSearch(keyword, placesSearchCB); // 검색
 }
 
 function placesSearchCB(data, status, pagination) {
@@ -58,14 +68,10 @@ function displayPlaces(places) { // 장소 마킹
     	bounds = new daum.maps.LatLngBounds(), 
     	listStr = '';
     
-    // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
-
-    // 지도에 표시되고 있는 마커를 제거합니다
     removeMarker();
     
     for ( var i=0; i<places.length; i++ ) {
-        // 마커를 생성하고 지도에 표시합니다
         var placePosition = new daum.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i), 
             itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
@@ -87,7 +93,7 @@ function displayPlaces(places) { // 장소 마킹
             });
             
             daum.maps.event.addListener(marker, 'click', function() {
-            	setPointList(placePosition);
+            	setPointList(marker.getPosition());
             });
 
             itemEl.onmouseover =  function () {
@@ -96,6 +102,10 @@ function displayPlaces(places) { // 장소 마킹
 
             itemEl.onmouseout =  function () {
                 infowindow.close();
+            };
+            
+            itemEl.onclick =  function () {
+            	setPointList(marker.getPosition());
             };
         })(marker, places[i].place_name);
 
@@ -197,7 +207,7 @@ function displayPagination(pagination) {
 // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
 // 인포윈도우에 장소명을 표시합니다
 function displayInfowindow(marker, title) {
-    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+    var content = '<div class="info_custom" style="padding:5px;z-index:1;">' + title + '</div>';
 
     infowindow.setContent(content);
     infowindow.open(map, marker);
@@ -210,19 +220,28 @@ function removeAllChildNods(el) {
     }
 }
 
-function setPointList(placePosition){
+var addingPointPosition;
+
+function setPointList(pointPosition){
     if (confirm('지점 리스트에 추가하시겠습니까?')){
-    	var point = placePosition;
-    	addPointMarker(point, pointCnt);
-    	pointCnt++;
-    	console.log(placePosition, pointCnt)
+    	addingPointPosition = pointPosition;
+    	$('body').addClass('infoedit');
+    	$('#info_input').focus();
     } else{
     	return false;
     }
 }
 
+function addPoint(){
+	addPointMarker(addingPointPosition, pointCnt);
+	pointCnt++;
+	$('#points_list').append('<li><span class="title">'+$('#info_input').val()+'</span><span class="del">x</span></li>')
+	$('#info_input').val('');
+	$('body').removeClass('infoedit');
+}
+
 function addPointMarker(position, idx, title) {
-    var imageSrc = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+    var imageSrc = '../img/marker_number_red.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new daum.maps.Size(36, 37),  // 마커 이미지의 크기
         imgOptions =  {
             spriteSize : new daum.maps.Size(36, 691), // 스프라이트 이미지의 크기
@@ -239,4 +258,56 @@ function addPointMarker(position, idx, title) {
     points.push(marker);  // 배열에 생성된 마커를 추가합니다
 
     return marker;
+}
+
+$(document).on('click', '#info_cancel', cancelAddPoint);
+$(document).on('click', '#points_list > li > span.del', delPoint);
+$(document).on('click', '#btn_calc', calcPoint);
+
+function calcPoint(){
+	var lat = 0;
+	var lng = 0;
+	var latAvg, lngAvg;
+	
+	for (var i=0;i<points.length;i++){
+		lat += points[i].getPosition().getLat();
+		lng += points[i].getPosition().getLng();
+	}
+	
+	latAvg = lat / points.length;
+	lngAvg = lng / points.length;
+	
+	var circle = new daum.maps.Circle({
+	    center : new daum.maps.LatLng(latAvg, lngAvg),  // 원의 중심좌표 입니다 
+	    radius: 200, // 미터 단위의 원의 반지름입니다 
+	    strokeWeight: 5, // 선의 두께입니다 
+	    strokeColor: '#000', // 선의 색깔입니다
+	    strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+	    strokeStyle: 'dashed', // 선의 스타일 입니다
+	    fillColor: '#000', // 채우기 색깔입니다
+	    fillOpacity: 0.5  // 채우기 불투명도 입니다   
+	}); 
+	
+	circle.setMap(map);
+	
+	var moveLatLon = new daum.maps.LatLng(latAvg, lngAvg);
+	 
+	map.setCenter(moveLatLon);
+	
+	console.log()
+}
+
+function delPoint(){
+	if (confirm('해당 지점을 삭제할까요?')){
+		var $point = $(this).parents('li');
+		$point.remove();
+		points.splice($point.index(), 1);
+    } else{
+    	return false;
+    }	
+}
+
+function cancelAddPoint(){
+	$('#info_input').val('');
+	$('body').removeClass('infoedit');
 }
